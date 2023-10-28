@@ -1,14 +1,16 @@
 const jwt = require('jsonwebtoken')
 
-exports.cookieJwtAuth = function (req, res, next) {
-	const token = req.cookie.token
+const cookieJwtAuth = (req, res, next) => {
+	const token = req.cookies.token
 
 	try {
 		const user = jwt.verify(token, 'oui')
-		req.user = user
+		res.user = user
 		next()
 	} catch(err) {
-		res.clearCookie('token')
+		res.clearCookie()
 		res.redirect('/')
 	}
 }
+
+module.exports = cookieJwtAuth
